@@ -7,7 +7,7 @@ This project involves a Deep Q-Learning Reinforcement Learning Model to estimate
 The model uses an experience replay and Double DQN with input features given by the current state of the stock, comprising 33 technical indicators, and available actions, namely buying, selling and holding a stock, while the output is the Q-value function estimating the future rewards. 
 
 
-#### Presentation Slides
+#### Documentation
 
 Further details regarding the methods and results of implementation can be found in the uploaded pdf document.
 
