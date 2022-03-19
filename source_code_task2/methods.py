@@ -55,22 +55,6 @@ def train_model(agent, episode, data, episode_count = 50, batch_size = 32, windo
     reward = calc_reward(pct_change[t] * 100, net_holdings)
     total_profit += reward
 
-    # if action == 1: # Buy
-    #   agent.inventory.append(data.price[t])
-    #
-    #   reward -= 1e-5 # Commission Penalty
-
-    # elif action == 2 and len(agent.inventory) > 0: # Sell
-    #   purchase_price = agent.inventory.pop(0)
-    #   delta = data.price[t] - purchase_price
-    #   reward = delta - 1e-5 # Commission Penalty
-    #   total_profit += delta
-    #   shares.append(-1)
-
-    # else: # Hold
-    #   shares.append(0)
-    #   reward -= 1e-3
-
     if not done:
       next_state, next_time = get_state(normed_data, t + 1)
       agent.remember(state, time, action, reward, next_state, next_time, done)
@@ -130,29 +114,6 @@ def evaluate_model(agent, data, verbose, window_size = 10):
 
     reward = calc_reward(pct_change[t], net_holdings)
     total_profit += reward
-    # if action == 1:
-    #   agent.inventory.append(data.price[t])
-    #   shares.append(1)
-    #   history.append((data.price[t], "BUY"))
-
-    #   if verbose:
-    #     logging.debug(f"Buy at: {format_currency(data.price[t])}")
-
-    # elif action == 2 and len(agent.inventory) > 0:
-    #   purchase_price = agent.inventory.pop(0)
-    #   delta = data.price[t] - purchase_price
-    #   reward = delta
-    #   total_profit += delta
-    #   shares.append(-1)
-    #   history.append((data.price[t], "SELL"))
-
-    #   if verbose:
-    #     logging.debug(f"Sell at: {format_currency(data.price[t])} | Position: {format_position(data.price[t] - purchase_price)}")
-
-    # else:
-    #   history.append((data.price[t], "HOLD"))
-    #   shares.append(0)
-    # cum_return.append(total_profit)
 
     if not done:
       next_state, next_time = get_state(normed_data, t + 1)
