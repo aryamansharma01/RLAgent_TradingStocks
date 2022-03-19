@@ -8,7 +8,7 @@ from keras.models import load_model, clone_model
 from keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.losses import Huber
-from source_code_task1.technical_indicators import simple_moving_average
+from source_code_task1.technical_indicators import exponential_moving_average
 from source_code_task1.utils import timestamp
 import math
 import pdb
@@ -81,7 +81,7 @@ class RLAgent:
 
   def replay(self, batch_size):
     mini_batch = random.sample(self.memory, batch_size)
-    X_train, y_train = [], []
+    X_train, y_train, q_valueslist = [], [], []
 
     if self.model_type == 'ddqn':
       if self.n_iter % self.reset_interval == 0:
@@ -95,7 +95,9 @@ class RLAgent:
           target = reward
         else:
           q_value = self.target_model.predict(next_state)[0][np.argmax(self.model.predict(next_state)[0])]
-          q_value = simple_moving_average(X_train, 10)
+          q_valueslist.append(q_value)
+          q_value = exponential_moving_average(q_valueslist, 10)
+          q_valueslist[-1] = q_value
           target = reward + self.gamma * q_value
 
         q_values = self.model.predict(state)
